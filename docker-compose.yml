@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  influxdb:
+    image: influxdb:latest
+    build: influxdb
+    env_file: configuration.env
+    ports:
+      - '8086:8086'
+      - '2003:2003'
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+  grafana:
+    image: grafana/grafana:latest
+    build: grafana
+    env_file: configuration.env
+    links:
+      - influxdb
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  grafana_data: {}
+  influxdb_data: {}
